@@ -1,22 +1,16 @@
-#!/bin/bash -e
+#!/bin/bash
 set -e
 
 pacman-key --init
 pacman-key --populate archlinuxarm
 pacman -Sy --noconfirm
 
-ls /boot
-
 # Uninstall old kernel
 pacman -Rns --noconfirm linux-aarch64 uboot-raspberrypi
-
-ls /boot
 
 # Install rpi-linux kernel
 pacman -S --noconfirm linux-rpi linux-rpi-headers
 pacman -Syu --noconfirm
-
-ls /boot
 
 # Install sudo
 pacman -S --noconfirm sudo
