@@ -45,6 +45,7 @@ pacman -S --noconfirm --needed \
   pipewire-alsa \
   wireplumber \
   pipewire-jack \
+  gstreamer \
   gst-libav \
   gst-plugins-base \
   gst-plugins-bad \
