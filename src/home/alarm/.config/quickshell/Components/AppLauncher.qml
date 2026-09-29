@@ -29,18 +29,15 @@ PanelWindow {
         }
     }
 
-    implicitWidth: 500
-    implicitHeight: 400
-    color: "transparent"
-    visible: false // was: true
-    WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
-    WlrLayershell.layer: WlrLayer.Overlay // draw above the bar and other windows
+    visible: false
+    exclusionMode: ExclusionMode.Ignore
+    margins.top: bar.height
 
     anchors {
-        top: false
-        bottom: false
-        left: false
-        right: false
+        top: true
+        bottom: true
+        left: true
+        right: true
     }
 
     Process {
@@ -55,45 +52,48 @@ PanelWindow {
     Rectangle {
         anchors.fill: parent
         color: "#1e1e2e"
-        radius: 12
         border.color: "#313244"
         border.width: 1
 
-        ListView {
+        GridView {
             id: appListView
 
-            anchors.fill: parent
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
             anchors.margins: 12
-            spacing: 4
             clip: true
             focus: root.visible
             model: root.appsList
+            cellWidth: Math.floor(appListView.width / 3)
+            cellHeight: Math.floor(appListView.height / 2)
 
             delegate: Rectangle {
                 required property var modelData
 
-                width: appListView.width
-                height: 42
-                radius: 6
-                color: itemMouse.containsMouse ? "#45475a" : "transparent"
+                width: appListView.cellWidth - 12
+                height: appListView.cellHeight - 12
+                radius: 10
+                color: itemMouse.pressed ? "#585b70" : (itemMouse.containsMouse ? "#45475a" : "#313244")
 
-                RowLayout {
-                    anchors.fill: parent
-                    anchors.leftMargin: 12
-                    anchors.rightMargin: 12
-                    spacing: 12
+                ColumnLayout {
+                    anchors.centerIn: parent
+                    spacing: 10
 
                     Text {
                         text: modelData.icon
-                        font.pixelSize: 18
+                        font.pixelSize: 48
                         color: "#89b4fa"
+                        Layout.alignment: Qt.AlignHCenter
                     }
 
                     Text {
                         text: modelData.name
-                        font.pixelSize: 14
+                        font.pixelSize: 20
                         color: "#cdd6f4"
-                        Layout.fillWidth: true
+                        horizontalAlignment: Text.AlignHCenter
+                        Layout.alignment: Qt.AlignHCenter
                     }
 
                 }

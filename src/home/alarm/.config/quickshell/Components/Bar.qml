@@ -10,6 +10,8 @@ ShellRoot {
     }
 
     PanelWindow {
+        id: bar
+
         anchors.top: true
         anchors.left: true
         anchors.right: true
