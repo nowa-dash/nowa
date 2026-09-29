@@ -35,6 +35,7 @@ pacman -S --noconfirm --needed \
   exfatprogs \
   networkmanager \
   labwc \
+  nemo \
   quickshell \
   swaybg \
   foot \
