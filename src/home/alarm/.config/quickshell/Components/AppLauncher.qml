@@ -21,9 +21,8 @@ PanelWindow {
         "icon": "󰞷"
     }]
 
-    function launchCurrent() {
-        if (appListView.currentIndex >= 0 && appListView.currentIndex < appsList.length) {
-            let app = appsList[appListView.currentIndex];
+    function launchApp(app) {
+        if (app && app.exec) {
             appProcess.command = ["bash", "-c", app.exec];
             appProcess.running = true;
             root.visible = false;
@@ -36,13 +35,6 @@ PanelWindow {
     visible: false // was: true
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
     WlrLayershell.layer: WlrLayer.Overlay // draw above the bar and other windows
-    // Reset selection and focus the list every time it's opened
-    onVisibleChanged: {
-        if (visible) {
-            appListView.currentIndex = 0;
-            appListView.forceActiveFocus();
-        }
-    }
 
     anchors {
         top: false
@@ -60,11 +52,6 @@ PanelWindow {
         onActivated: root.visible = false
     }
 
-    Shortcut {
-        sequence: "Return"
-        onActivated: root.launchCurrent()
-    }
-
     Rectangle {
         anchors.fill: parent
         color: "#1e1e2e"
@@ -79,20 +66,16 @@ PanelWindow {
             anchors.margins: 12
             spacing: 4
             clip: true
-            focus: true
+            focus: root.visible
             model: root.appsList
-            currentIndex: 0
-            Keys.onDownPressed: incrementCurrentIndex()
-            Keys.onUpPressed: decrementCurrentIndex()
 
             delegate: Rectangle {
                 required property var modelData
-                required property int index
 
                 width: appListView.width
                 height: 42
                 radius: 6
-                color: index === appListView.currentIndex ? "#45475a" : "transparent"
+                color: itemMouse.containsMouse ? "#45475a" : "transparent"
 
                 RowLayout {
                     anchors.fill: parent
@@ -116,11 +99,12 @@ PanelWindow {
                 }
 
                 MouseArea {
+                    id: itemMouse
+
                     anchors.fill: parent
-                    onClicked: {
-                        appListView.currentIndex = index;
-                        root.launchCurrent();
-                    }
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: root.launchApp(modelData)
                 }
 
             }
