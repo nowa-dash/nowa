@@ -46,6 +46,8 @@ pacman -S --noconfirm --needed \
   pipewire-alsa \
   wireplumber \
   pipewire-jack \
+  bluez \
+  bluez-utils \
   gstreamer \
   gst-libav \
   gst-plugins-base \
@@ -54,6 +56,9 @@ pacman -S --noconfirm --needed \
 
 # Enable pipewire
 systemctl --global enable pipewire pipewire-pulse wireplumber
+
+# Enable bluetooth
+systemctl --global enable bluetooth
 
 # Build aasdk
 ANDROID_AUTO_SRC="/root/android-auto"
