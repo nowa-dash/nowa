@@ -9,21 +9,36 @@ PanelWindow {
 
     property var appsList: [{
         "name": "Android Auto",
-        "exec": "autoapp",
-        "icon": ""
+        "icon": "",
+        "exec": "autoapp"
     }, {
         "name": "Files",
-        "exec": "nemo",
-        "icon": "󰉋"
+        "icon": "󰉋",
+        "exec": "nemo"
     }, {
         "name": "Terminal",
-        "exec": "foot",
-        "icon": "󰞷"
-    },{
+        "icon": "󰞷",
+        "exec": "foot"
+    }, {
         "name": "Power",
-        "exec": "",
-        "icon": "󰐥" 
+        "icon": "⏻",
+        "items": [{
+            "name": "Shutdown",
+            "icon": "⏻",
+            "exec": "shutdown now"
+        }, {
+            "name": "Reboot",
+            "icon": "󰜉",
+            "exec": "reboot"
+        }]
     }]
+    property var folderStack: []
+    readonly property var currentItems: folderStack.length > 0 ? folderStack[folderStack.length - 1].items : appsList
+    readonly property var visibleItems: folderStack.length > 0 ? [{
+        "name": "Back",
+        "icon": "󰌑",
+        "Return": true
+    }].concat(currentItems) : currentItems
 
     function launchApp(app) {
         if (app && app.exec) {
@@ -31,6 +46,15 @@ PanelWindow {
             appProcess.running = true;
             root.visible = false;
         }
+    }
+
+    function openItem(item) {
+        if (item.Return)
+            folderStack = folderStack.slice(0, -1);
+        else if (item.items)
+            folderStack = folderStack.concat([item]);
+        else
+            launchApp(item);
     }
 
     visible: false
@@ -48,11 +72,6 @@ PanelWindow {
         id: appProcess
     }
 
-    Shortcut {
-        sequence: "Escape"
-        onActivated: root.visible = false
-    }
-
     Rectangle {
         anchors.fill: parent
         color: "#1e1e2e"
@@ -62,14 +81,11 @@ PanelWindow {
         GridView {
             id: appListView
 
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
+            anchors.fill: parent
             anchors.margins: 12
             clip: true
             focus: root.visible
-            model: root.appsList
+            model: root.visibleItems
             cellWidth: Math.floor(appListView.width / 3)
             cellHeight: Math.floor(appListView.height / 2)
 
@@ -108,7 +124,7 @@ PanelWindow {
                     anchors.fill: parent
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: root.launchApp(modelData)
+                    onClicked: root.openItem(modelData)
                 }
 
             }
