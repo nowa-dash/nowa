@@ -74,6 +74,7 @@ ShellRoot {
             MouseArea {
                 id: closeMouse
 
+                anchors.fill: parent
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
