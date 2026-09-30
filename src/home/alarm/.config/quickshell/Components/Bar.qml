@@ -55,6 +55,36 @@ ShellRoot {
             font.pixelSize: 14
         }
 
+        Rectangle {
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.rightMargin: 6
+            width: 34
+            height: 22
+            radius: 4
+            visible: ToplevelManager.activeToplevel !== null
+            color: closeMouse.containsMouse ? "#7f3b3b" : "#3b2b2b"
+
+            Text {
+                anchors.centerIn: parent
+                text: ""
+                color: "#f5c2c2"
+            }
+
+            MouseArea {
+                id: closeMouse
+
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: {
+                    if (ToplevelManager.activeToplevel) {
+                        ToplevelManager.activeToplevel.close();
+                    }
+                }
+            }
+
+        }
+
     }
 
 }
