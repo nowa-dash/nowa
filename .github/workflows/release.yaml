@@ -1,12 +1,8 @@
 name: Build and Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: "Release version (e.g. 1.0.0)"
-        required: true
-        type: string
+  release:
+    types: [published]
 
 permissions:
   contents: write
@@ -54,7 +50,7 @@ jobs:
 
       - name: Create image file
         run: |
-          IMG_NAME="nowa-${{ inputs.version }}-arm64.img"
+          IMG_NAME="nowa-${{ github.event.release.tag_name }}-arm64.img"
           truncate -s "${{ steps.imgsize.outputs.img_mb }}M" "$IMG_NAME"
 
           parted -s "$IMG_NAME" mklabel msdos
@@ -135,11 +131,8 @@ jobs:
       - name: Compress image
         run: xz -T0 -9 "$IMG_NAME"
 
-      - name: Release arm64 image
+      - name: Upload image to release
         uses: softprops/action-gh-release@master
         with:
-          tag_name: ${{ format('v{0}', inputs.version) }}
-          name: ${{ format('v{0}', inputs.version) }}
-          overwrite_files: true
-          files: |
-            ${{ env.IMG_NAME }}.xz
+          tag_name: ${{ github.event.release.tag_name }}
+          files: ${{ env.IMG_NAME }}.xz
