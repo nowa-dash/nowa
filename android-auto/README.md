@@ -30,5 +30,4 @@ Required to run `autoapp` / `btservice` (loaded via dynamic linking):
 | `libusb` | USB host-mode detection |
 | `qt5-base` | Qt5Widgets/Gui/Core used by the UI |
 | `qt5-multimedia` | Qt5Multimedia / Qt5MultimediaWidgets |
-| `qt5-connectivity` | Qt5Bluetooth for A2DP/Bluetooth audio |
 | `rtaudio` | Audio output backend |
