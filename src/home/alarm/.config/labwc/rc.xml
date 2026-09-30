@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <labwc_config>
   <windowRules>
-    <windowRule identifier="*">
+    <windowRule identifier="*" serverDecoration="no">
       <action name="Maximize" />
     </windowRule>
   </windowRules>
