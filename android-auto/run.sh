@@ -8,21 +8,19 @@ OPENAUTO_DIR="$ROOT_DIR/openauto"
 OUTPUT_DIR="${TOP_DIR:-$ROOT_DIR}/output"
 
 AASDK_BUILD_DIR="$OUTPUT_DIR/aasdk"
+AASDK_STAGE_DIR="$AASDK_BUILD_DIR/stage"
 OPENAUTO_BUILD_DIR="$OUTPUT_DIR/openauto"
 
 mkdir -p "$OUTPUT_DIR" "$OPENAUTO_BUILD_DIR"
 
-cmake -S "$AASDK_DIR" -B "$AASDK_BUILD_DIR"
+cmake -S "$AASDK_DIR" -B "$AASDK_BUILD_DIR" -DCMAKE_INSTALL_PREFIX="$AASDK_STAGE_DIR"
 cmake --build "$AASDK_BUILD_DIR" -j"$(nproc)"
+cmake --install "$AASDK_BUILD_DIR"
 
-# As seen in `ldd output/bin/autoapp | grep aasdk` these flags should be changed when used in building for the rpi image.
-# Should probably end up in something like /opt/nowa
+# As seen in `ldd ./android-auto/openauto/bin/autoapp | grep aasdk` these flags should be changed when used in building for the rpi image.
 cmake -S "$OPENAUTO_DIR" -B "$OPENAUTO_BUILD_DIR" \
   -DCMAKE_EXE_LINKER_FLAGS="-Wl,--copy-dt-needed-entries" \
-  -DAASDK_INCLUDE_DIRS="$AASDK_DIR/include" \
-  -DAASDK_PROTO_INCLUDE_DIRS="$AASDK_BUILD_DIR" \
-  -DAASDK_LIBRARIES="$AASDK_DIR/lib/libaasdk.so" \
-  -DAASDK_PROTO_LIBRARIES="$AASDK_DIR/lib/libaasdk_proto.so"
+  -DCMAKE_PREFIX_PATH="$AASDK_STAGE_DIR"
 cmake --build "$OPENAUTO_BUILD_DIR" -j"$(nproc)"
 
 echo "Build complete."
