@@ -19,6 +19,10 @@ PanelWindow {
         "name": "Terminal",
         "exec": "foot",
         "icon": "󰞷"
+    },{
+        "name": "Power",
+        "exec": "",
+        "icon": "󰐥" 
     }]
 
     function launchApp(app) {
