@@ -67,7 +67,7 @@ systemctl --global enable pipewire pipewire-pulse wireplumber
 # Build aasdk
 ANDROID_AUTO_SRC="/root/android-auto"
 BUILD_DIR="/root/build"
-INSTALL_PREFIX="/opt/nowa"
+INSTALL_PREFIX="/usr"
 
 mkdir -p "$BUILD_DIR"
 chown -R builder:builder "$ANDROID_AUTO_SRC" "$BUILD_DIR"
@@ -81,11 +81,8 @@ sudo -u builder bash -c "
     -DCMAKE_INSTALL_PREFIX='$INSTALL_PREFIX'
   cmake --build '$BUILD_DIR/aasdk' -j\$(nproc)
 "
-# Install needs root to write to /opt
 cmake --install "$BUILD_DIR/aasdk"
 
-# Refresh linker cache so the openauto build below can find libaasdk/libaasdk_proto
-echo "$INSTALL_PREFIX/lib" >/etc/ld.so.conf.d/nowa.conf
 ldconfig
 
 # Build openauto
@@ -94,11 +91,7 @@ sudo -u builder bash -c "
   cmake -S '$ANDROID_AUTO_SRC/openauto' -B '$BUILD_DIR/openauto' \
     -GNinja \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX='$INSTALL_PREFIX' \
-    -DAASDK_INCLUDE_DIRS='$INSTALL_PREFIX/include' \
-    -DAASDK_PROTO_INCLUDE_DIRS='$INSTALL_PREFIX/include' \
-    -DAASDK_LIBRARIES='$INSTALL_PREFIX/lib/libaasdk.so' \
-    -DAASDK_PROTO_LIBRARIES='$INSTALL_PREFIX/lib/libaasdk_proto.so'
+    -DCMAKE_INSTALL_PREFIX='$INSTALL_PREFIX'
   cmake --build '$BUILD_DIR/openauto' -j\$(nproc)
 "
 cmake --install "$BUILD_DIR/openauto"
