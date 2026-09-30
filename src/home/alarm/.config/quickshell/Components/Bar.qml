@@ -62,7 +62,7 @@ ShellRoot {
             width: 34
             height: 22
             radius: 4
-            visible: ToplevelManager.activeToplevel !== null
+            visible: ToplevelManager.activeToplevel !== null && !launcher.visible
             color: closeMouse.containsMouse ? "#7f3b3b" : "#3b2b2b"
 
             Text {
@@ -78,9 +78,9 @@ ShellRoot {
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
-                    if (ToplevelManager.activeToplevel) {
+                    if (ToplevelManager.activeToplevel)
                         ToplevelManager.activeToplevel.close();
-                    }
+
                 }
             }
 
