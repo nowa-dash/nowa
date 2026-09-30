@@ -52,15 +52,6 @@ pacman -S --noconfirm --needed \
   gst-plugins-bad \
   gst-plugins-good
 
-sudo -u builder bash -c '
-  set -e
-  cd ~
-  git clone https://aur.archlinux.org/qt5-connectivity.git
-  cd qt5-connectivity
-  makepkg -si --noconfirm
-  cd ~
-'
-
 # Enable pipewire
 systemctl --global enable pipewire pipewire-pulse wireplumber
 
