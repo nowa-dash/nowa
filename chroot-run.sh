@@ -54,6 +54,10 @@ pacman -S --noconfirm --needed \
   gst-plugins-bad \
   gst-plugins-good
 
+# Disable systemd-networkd and enable networkmanager
+systemctl disable systemd-networkd  
+systemctl enable NetworkManager
+
 # Enable pipewire
 systemctl --global enable pipewire pipewire-pulse wireplumber
 
