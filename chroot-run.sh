@@ -48,6 +48,7 @@ pacman -S --noconfirm --needed \
   pipewire-jack \
   bluez \
   bluez-utils \
+  blueman \
   gstreamer \
   gst-libav \
   gst-plugins-base \
