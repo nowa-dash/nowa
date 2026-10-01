@@ -21,7 +21,6 @@ echo "builder ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/builder
 
 # Install everything
 pacman -S --noconfirm --needed \
-  git \
   base-devel \
   cmake \
   ninja \
@@ -59,7 +58,7 @@ pacman -S --noconfirm --needed \
 systemctl --global enable pipewire pipewire-pulse wireplumber
 
 # Enable bluetooth
-systemctl --global enable bluetooth
+systemctl enable bluetooth
 
 # Build aasdk
 ANDROID_AUTO_SRC="/root/android-auto"
@@ -96,7 +95,7 @@ cmake --install "$BUILD_DIR/openauto"
 # Clean up build tree and source checkout — not needed on the final image
 rm -rf "$BUILD_DIR" "$ANDROID_AUTO_SRC"
 
-pacman -Rns --noconfirm git cmake base-devel ninja boost
+pacman -Rns --noconfirm cmake base-devel ninja boost
 pacman -S --noconfirm --needed boost-libs # Reinstalling because removing boost also removes boost-libs
 
 pacman -Scc --noconfirm || true
