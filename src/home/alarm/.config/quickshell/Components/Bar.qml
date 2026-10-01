@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Wayland
 
 ShellRoot {
@@ -17,6 +18,26 @@ ShellRoot {
         anchors.right: true
         implicitHeight: 60
         color: "#1a1b26"
+
+        Process {
+            id: tempProc
+
+            // Get the temp
+            command: ["sh", "-c", "cat $(grep -lE 'coretemp|k10temp|cpu_thermal' /sys/class/hwmon/hwmon*/name | sed 's/name/temp1_input/' | head -1) /sys/class/thermal/thermal_zone0/temp | head -1"]
+
+            stdout: StdioCollector {
+                onStreamFinished: tempText.text = Math.round(parseInt(text) / 1000) + "°C"
+            }
+
+        }
+
+        Timer {
+            interval: 2000 // Update every 2 seconds
+            running: true
+            repeat: true
+            triggeredOnStart: true
+            onTriggered: tempProc.running = true
+        }
 
         // Launcher button
         Rectangle {
@@ -47,8 +68,9 @@ ShellRoot {
         }
 
         Text {
+            id: tempText
+
             anchors.centerIn: parent
-            text: "Hello, World!"
             font.pixelSize: 24
             color: "#a9b1d6"
         }
@@ -63,7 +85,7 @@ ShellRoot {
 
             Text {
                 anchors.centerIn: parent
-                text: ""
+                text: "󰅖"
                 font.pixelSize: 50
                 color: "#f5c2c2"
             }
