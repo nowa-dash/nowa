@@ -21,10 +21,10 @@ PanelWindow {
         "exec": "foot"
     }, {
         "name": "Power",
-        "icon": "⏻",
+        "icon": "󰐥",
         "items": [{
             "name": "Shutdown",
-            "icon": "⏻",
+            "icon": "󰐥",
             "exec": "shutdown now"
         }, {
             "name": "Reboot",
@@ -76,13 +76,12 @@ PanelWindow {
         anchors.fill: parent
         color: "#1e1e2e"
         border.color: "#313244"
-        border.width: 1
 
         GridView {
             id: appListView
 
             anchors.fill: parent
-            anchors.margins: 12
+            anchors.margins: 5
             clip: true
             focus: root.visible
             model: root.visibleItems
@@ -92,18 +91,18 @@ PanelWindow {
             delegate: Rectangle {
                 required property var modelData
 
-                width: appListView.cellWidth - 12
-                height: appListView.cellHeight - 12
-                radius: 10
+                width: appListView.cellWidth
+                height: appListView.cellHeight
+                border.color: "#1E1E2E"
+                border.width: 5
                 color: itemMouse.pressed ? "#585b70" : (itemMouse.containsMouse ? "#45475a" : "#313244")
 
                 ColumnLayout {
                     anchors.centerIn: parent
-                    spacing: 10
 
                     Text {
                         text: modelData.icon
-                        font.pixelSize: 48
+                        font.pixelSize: 78
                         color: "#89b4fa"
                         Layout.alignment: Qt.AlignHCenter
                     }

@@ -26,7 +26,6 @@ ShellRoot {
             anchors.verticalCenter: parent.verticalCenter
             width: parent.height // Yes, this is supposed to be height. This way the button stays square and scales with the bar.
             height: parent.height
-            radius: 4
             color: mouse.containsMouse ? "#414868" : "#292e42"
 
             Text {
@@ -50,23 +49,22 @@ ShellRoot {
         Text {
             anchors.centerIn: parent
             text: "Hello, World!"
-            color: "#a9b1d6"
             font.pixelSize: 24
+            color: "#a9b1d6"
         }
 
         Rectangle {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            anchors.rightMargin: 6
-            width: 34
-            height: 22
-            radius: 4
+            width: parent.height // Again... This is supposed to be height so it scales.
+            height: parent.height
             visible: ToplevelManager.activeToplevel !== null && !launcher.visible
             color: closeMouse.containsMouse ? "#7f3b3b" : "#3b2b2b"
 
             Text {
                 anchors.centerIn: parent
                 text: ""
+                font.pixelSize: 50
                 color: "#f5c2c2"
             }
 
