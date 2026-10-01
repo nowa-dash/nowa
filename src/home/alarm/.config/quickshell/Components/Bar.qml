@@ -15,7 +15,7 @@ ShellRoot {
         anchors.top: true
         anchors.left: true
         anchors.right: true
-        implicitHeight: 30
+        implicitHeight: 60
         color: "#1a1b26"
 
         // Launcher button
@@ -24,17 +24,16 @@ ShellRoot {
 
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: 6
-            width: 70
-            height: 22
+            width: parent.height // Yes, this is supposed to be height. This way the button stays square and scales with the bar.
+            height: parent.height
             radius: 4
             color: mouse.containsMouse ? "#414868" : "#292e42"
 
             Text {
                 anchors.centerIn: parent
-                text: "Launcher"
+                text: "󰍜"
                 color: "#a9b1d6"
-                font.pixelSize: 12
+                font.pixelSize: 50
             }
 
             MouseArea {
@@ -50,9 +49,9 @@ ShellRoot {
 
         Text {
             anchors.centerIn: parent
-            text: "My First Bar"
+            text: "Hello, World!"
             color: "#a9b1d6"
-            font.pixelSize: 14
+            font.pixelSize: 24
         }
 
         Rectangle {
