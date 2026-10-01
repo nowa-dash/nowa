@@ -36,6 +36,7 @@ pacman -S --noconfirm --needed \
   labwc \
   nemo \
   quickshell \
+  ttf-cascadia-code-nerd \
   swaybg \
   foot \
   android-udev \
@@ -110,8 +111,6 @@ rm -rf /var/cache/pacman/pkg/..?*
 # Clean up the temporary build user and its sudo grant
 userdel -r builder
 rm /etc/sudoers.d/builder
-
-systemctl enable NetworkManager
 
 # Fix home dir permissions
 chown -R alarm:alarm /home/alarm
