@@ -28,8 +28,9 @@ pacman -S --noconfirm --needed \
   libusb \
   protobuf \
   openssl \
-  qt5-base \
-  qt5-multimedia \
+  qt6-base \
+  qt6-multimedia \
+  qt6-wayland \
   rtaudio \
   exfatprogs \
   networkmanager \
@@ -40,7 +41,6 @@ pacman -S --noconfirm --needed \
   swaybg \
   foot \
   android-udev \
-  qt5-wayland \
   pipewire \
   pipewire-pulse \
   pipewire-alsa \
