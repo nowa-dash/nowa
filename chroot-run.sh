@@ -37,7 +37,7 @@ pacman -S --noconfirm --needed \
   labwc \
   nemo \
   quickshell \
-  ttf-cascadia-code-nerd \
+  ttf-nerd-fonts-symbols \
   swaybg \
   foot \
   android-udev \
