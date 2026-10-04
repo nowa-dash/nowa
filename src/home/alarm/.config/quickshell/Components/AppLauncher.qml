@@ -16,6 +16,10 @@ PanelWindow {
         "icon": "󰂯",
         "exec": "blueman-manager"
     }, {
+        "name": "Lollypop",
+        "icon": "󰝚",
+        "exec": "lollypop"
+    }, {
         "name": "Files",
         "icon": "󰉋",
         "exec": "nemo"

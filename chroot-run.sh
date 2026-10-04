@@ -49,6 +49,7 @@ pacman -S --noconfirm --needed \
   bluez \
   bluez-utils \
   blueman \
+  lollypop \
   gstreamer \
   gst-libav \
   gst-plugins-base \
