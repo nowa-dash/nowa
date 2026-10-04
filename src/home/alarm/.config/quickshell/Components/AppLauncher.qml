@@ -12,6 +12,10 @@ PanelWindow {
         "icon": "",
         "exec": "autoapp"
     }, {
+        "name": "Bluetooth",
+        "icon": "󰂯",
+        "exec": "blueman-manager"
+    }, {
         "name": "Files",
         "icon": "󰉋",
         "exec": "nemo"
