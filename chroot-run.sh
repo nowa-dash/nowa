@@ -65,6 +65,9 @@ systemctl --global enable pipewire pipewire-pulse wireplumber
 # Enable bluetooth
 systemctl enable bluetooth
 
+# Enable the bluez mpris proxy
+systemctl --global enable mpris-proxy.service
+
 # Build aasdk
 ANDROID_AUTO_SRC="/root/android-auto"
 BUILD_DIR="/root/build"
