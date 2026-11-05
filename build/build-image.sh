@@ -23,7 +23,9 @@ cp -r --remove-destination rootfs/. "$MNT/"
 mkdir -p "$MNT/root"
 cp -r android-auto "$MNT/root/android-auto"
 
-for fs in proc sys dev dev/pts; domount --bind "/$fs" "$MNT/$fs"; done
+for fs in proc sys dev dev/pts; do
+	mount --bind "/$fs" "$MNT/$fs"
+done
 
 install -m 755 build/chroot-setup.sh "$MNT/root/"
 chroot "$MNT" /root/chroot-setup.sh
