@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 pacman-key --init
 pacman-key --populate archlinuxarm
@@ -91,8 +91,8 @@ cmake --install "$BUILD_DIR/openauto"
 # Clean up build tree and source checkout — not needed on the final image
 rm -rf "$BUILD_DIR" "$ANDROID_AUTO_SRC"
 
+pacman -D --asexplicit boost-libs
 pacman -Rns --noconfirm cmake base-devel ninja boost
-pacman -S --noconfirm --needed boost-libs # Reinstalling because removing boost also removes boost-libs
 
 pacman -Scc --noconfirm || true
 rm -rf /var/cache/pacman/pkg/*
