@@ -94,10 +94,7 @@ rm -rf "$BUILD_DIR" "$ANDROID_AUTO_SRC"
 pacman -D --asexplicit boost-libs
 pacman -Rns --noconfirm cmake base-devel ninja boost
 
-pacman -Scc --noconfirm || true
-rm -rf /var/cache/pacman/pkg/*
-rm -rf /var/cache/pacman/pkg/.[!.]*
-rm -rf /var/cache/pacman/pkg/..?*
+find /var/cache/pacman/pkg -mindepth 1 -delete
 
 # Fix home dir permissions
 chown -R alarm:alarm /home/alarm
