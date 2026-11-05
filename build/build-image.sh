@@ -39,5 +39,7 @@ sed -i "s#root=/dev/mmcblk0p2#root=UUID=${ROOT_UUID}#" "$MNT/boot/cmdline.txt"
 fstrim -v "$MNT"
 fstrim -v "$MNT/boot"
 sync
+fuser -km "$MNT" || true
+sleep 1
 umount -R "$MNT"
 losetup -d "$LOOPDEV"
