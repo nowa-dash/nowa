@@ -8,12 +8,10 @@ pacman -Sy --noconfirm
 # Uninstall old kernel
 pacman -Rns --noconfirm linux-aarch64 uboot-raspberrypi
 
-# Install rpi-linux kernel
-pacman -S --noconfirm linux-rpi linux-rpi-headers
-pacman -Syu --noconfirm
-
 # Install everything
-pacman -S --noconfirm --needed \
+pacman -Syu --noconfirm --needed \
+	linux-rpi \
+	linux-rpi-headers \
 	base-devel \
 	cmake \
 	ninja \
