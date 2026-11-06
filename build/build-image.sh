@@ -36,8 +36,10 @@ ROOT_UUID=$(blkid -s UUID -o value "${LOOPDEV}p2")
 sed -i "s#^/dev/mmcblk0p1.*#UUID=${BOOT_UUID}  /boot  vfat  defaults  0  0#" "$MNT/etc/fstab"
 sed -i "s#root=/dev/mmcblk0p2#root=UUID=${ROOT_UUID}#" "$MNT/boot/cmdline.txt"
 
-fstrim -v "$MNT"
-fstrim -v "$MNT/boot"
+dd if=/dev/zero of="$MNT/zero.fill" bs=1M || true
+rm "$MNT/zero.fill"
+dd if=/dev/zero of="$MNT/boot/zero.fill" bs=1M || true
+rm "$MNT/boot/zero.fill"
 sync
 fuser -km "$MNT" || true
 sleep 1
