@@ -26,6 +26,7 @@ pacman -Syu --noconfirm --needed \
 	exfatprogs \
 	networkmanager \
 	labwc \
+	xwayland-satellite \
 	nemo \
 	quickshell \
 	ttf-nerd-fonts-symbols \
