@@ -19,24 +19,18 @@ ShellRoot {
         implicitHeight: 60
         color: "#1a1b26"
 
-        Process {
-            id: tempProc
+        FileView {
+            id: tempFile
 
-            // Get the temp
-            command: ["sh", "-c", "cat $(grep -lE 'coretemp|k10temp|cpu_thermal' /sys/class/hwmon/hwmon*/name | sed 's/name/temp1_input/' | head -1) /sys/class/thermal/thermal_zone0/temp | head -1"]
-
-            stdout: StdioCollector {
-                onStreamFinished: tempText.text = Math.round(parseInt(text) / 1000) + "°C"
-            }
-
+            path: "/sys/class/thermal/thermal_zone0/temp"
+            onLoaded: tempText.text = Math.round(parseInt(text()) / 1000) + "°C"
         }
 
         Timer {
             interval: 2000 // Update every 2 seconds
             running: true
             repeat: true
-            triggeredOnStart: true
-            onTriggered: tempProc.running = true
+            onTriggered: tempFile.reload()
         }
 
         // Launcher button
