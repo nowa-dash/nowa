@@ -1,0 +1,16 @@
+[package]
+name = "android-auto"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-or-later"
+description = "Wired Android Auto head unit protocol, video and audio, without UI"
+
+[dependencies]
+nusb = "0.2"
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
+openh264 = "0.9"
+v4l2r = "0.0.8"
+yuvutils-rs = "0.8"
+pulseaudio = "0.3"
+futures = { version = "0.3", default-features = false, features = ["executor"] }
+anyhow = "1"

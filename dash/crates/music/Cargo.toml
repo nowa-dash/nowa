@@ -1,0 +1,10 @@
+[package]
+name = "music"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-or-later"
+description = "Local music library and playback"
+
+[dependencies]
+lofty = "0.25"
+playback-rs = "0.5"

@@ -1,0 +1,14 @@
+[package]
+name = "nowa-dash"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-or-later"
+
+[dependencies]
+android-auto = { path = "../android-auto" }
+music = { path = "../music" }
+# winit for development on a desktop, KMS (+ libinput for touch) on the car; femtovg is OpenGL ES 2
+slint = { version = "1.19", default-features = false, features = ["std", "compat-1-2", "backend-winit", "backend-linuxkms-noseat", "renderer-femtovg", "renderer-software"] }
+
+[build-dependencies]
+slint-build = "1.19"
