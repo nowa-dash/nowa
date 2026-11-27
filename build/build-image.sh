@@ -2,6 +2,7 @@
 set -euo pipefail
 
 IMG=$1
+DASH=$2
 MNT=mnt
 
 truncate -s 10G "$IMG"
@@ -20,8 +21,7 @@ curl -fsSL http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-aarch64-latest.tar.gz 
 	tar -xzp -C "$MNT" --numeric-owner
 
 cp -r --remove-destination rootfs/. "$MNT/"
-mkdir -p "$MNT/root"
-cp -r android-auto "$MNT/root/android-auto"
+install -Dm755 "$DASH" "$MNT/usr/local/bin/nowa-dash"
 
 for fs in proc sys dev dev/pts; do
 	mount --bind "/$fs" "$MNT/$fs"
@@ -36,10 +36,11 @@ ROOT_UUID=$(blkid -s UUID -o value "${LOOPDEV}p2")
 sed -i "s#^/dev/mmcblk0p1.*#UUID=${BOOT_UUID}  /boot  vfat  defaults  0  0#" "$MNT/etc/fstab"
 sed -i "s#root=/dev/mmcblk0p2#root=UUID=${ROOT_UUID}#" "$MNT/boot/cmdline.txt"
 
-dd if=/dev/zero of="$MNT/zero.fill" bs=1M || true
-rm "$MNT/zero.fill"
-dd if=/dev/zero of="$MNT/boot/zero.fill" bs=1M || true
-rm "$MNT/boot/zero.fill"
+# dd if=/dev/zero of="$MNT/zero.fill" bs=1M || true
+# rm "$MNT/zero.fill"
+# dd if=/dev/zero of="$MNT/boot/zero.fill" bs=1M || true
+# rm "$MNT/boot/zero.fill"
+fstrim -av
 sync
 fuser -km "$MNT" || true
 sleep 1

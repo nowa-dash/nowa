@@ -3,7 +3,6 @@ set -euo pipefail
 
 pacman-key --init
 pacman-key --populate archlinuxarm
-pacman -Sy --noconfirm
 
 # Uninstall old kernel
 pacman -Rns --noconfirm linux-aarch64 uboot-raspberrypi
@@ -11,42 +10,25 @@ pacman -Rns --noconfirm linux-aarch64 uboot-raspberrypi
 # Install everything
 pacman -Syu --noconfirm --needed \
 	linux-rpi \
-	linux-rpi-headers \
-	base-devel \
-	cmake \
-	ninja \
-	boost \
-	libusb \
-	protobuf \
-	openssl \
-	qt6-base \
-	qt6-multimedia \
-	qt6-wayland \
-	rtaudio \
+	sudo \
 	exfatprogs \
 	networkmanager \
-	labwc \
-	xwayland-satellite \
-	nemo \
-	quickshell \
-	ttf-nerd-fonts-symbols \
-	swaybg \
-	foot \
 	android-udev \
+	mesa \
+	libinput \
+	libxkbcommon \
+	alsa-lib \
+	fontconfig \
+	ttf-dejavu \
 	pipewire \
 	pipewire-pulse \
 	pipewire-alsa \
 	wireplumber \
-	pipewire-jack \
 	bluez \
-	bluez-utils \
-	blueman \
-	lollypop \
-	gstreamer \
-	gst-libav \
-	gst-plugins-base \
-	gst-plugins-bad \
-	gst-plugins-good
+	bluez-utils
+
+# Crash the workflow if there are missing runtime dependencies
+if ldd /usr/local/bin/nowa-dash | grep 'not found'; then exit 1; fi
 
 # Disable systemd-networkd and enable networkmanager
 systemctl disable systemd-networkd
@@ -61,37 +43,8 @@ systemctl enable bluetooth
 # Enable the bluez mpris proxy
 systemctl --global enable mpris-proxy.service
 
-# Build aasdk
-ANDROID_AUTO_SRC="/root/android-auto"
-BUILD_DIR="/root/build"
-INSTALL_PREFIX="/usr"
-
-mkdir -p "$BUILD_DIR"
-
-cmake -S "$ANDROID_AUTO_SRC/aasdk" -B "$BUILD_DIR/aasdk" \
-	-GNinja \
-	-DCMAKE_BUILD_TYPE=Release \
-	-DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX"
-cmake --build "$BUILD_DIR/aasdk" -j"$(nproc)"
-
-cmake --install "$BUILD_DIR/aasdk"
-
-ldconfig
-
-# Build openauto
-cmake -S "$ANDROID_AUTO_SRC/openauto" -B "$BUILD_DIR/openauto" \
-	-GNinja \
-	-DCMAKE_BUILD_TYPE=Release \
-	-DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX"
-cmake --build "$BUILD_DIR/openauto" -j"$(nproc)"
-
-cmake --install "$BUILD_DIR/openauto"
-
-# Clean up build tree and source checkout — not needed on the final image
-rm -rf "$BUILD_DIR" "$ANDROID_AUTO_SRC"
-
-pacman -D --asexplicit boost-libs
-pacman -Rns --noconfirm cmake base-devel ninja boost
+# Hardware video decoder (/dev/video*) for Android Auto
+usermod -aG video alarm
 
 find /var/cache/pacman/pkg -mindepth 1 -delete
 

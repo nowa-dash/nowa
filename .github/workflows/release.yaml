@@ -8,22 +8,57 @@ permissions:
   contents: write
 
 jobs:
+  build-dash:
+    name: Build and release nowa-dash
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libclang-dev pkg-config libasound2-dev libpipewire-0.3-dev libspa-0.2-dev libinput-dev libudev-dev libgbm-dev libxkbcommon-dev libfontconfig-dev
+
+      - name: Build nowa-dash
+        working-directory: dash
+        run: |
+          rustup update stable
+          cargo build --release --locked
+          cp target/release/nowa-dash ../nowa-dash-aarch64
+
+      - name: Upload binary for the image job
+        uses: actions/upload-artifact@main
+        with:
+          name: nowa-dash-aarch64
+          path: nowa-dash-aarch64
+          retention-days: 1
+
+      - name: Upload binary to release
+        uses: softprops/action-gh-release@master
+        with:
+          files: nowa-dash-aarch64
+
   build-pi-image:
     name: Build and release image
+    needs: build-dash
     runs-on: ubuntu-24.04-arm
     env:
       IMG_NAME: nowa-${{ github.event.release.tag_name }}-arm64.img
 
     steps:
       - uses: actions/checkout@main
-        with:
-          submodules: recursive
 
       - name: Install build dependencies
         run: sudo apt-get update && sudo apt-get install -y parted dosfstools e2fsprogs
 
+      - name: Download binary
+        uses: actions/download-artifact@main
+        with:
+          name: nowa-dash-aarch64
+
       - name: Build image
-        run: sudo ./build/build-image.sh "$IMG_NAME"
+        run: sudo ./build/build-image.sh "$IMG_NAME" nowa-dash-aarch64
 
       - name: Compress image
         run: sudo xz -T0 -9 "$IMG_NAME"
