@@ -1,8 +1,8 @@
 [package]
 name = "android-auto"
-version = "0.1.0"
-edition = "2024"
-license = "GPL-3.0-or-later"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
 description = "Wired Android Auto head unit protocol, video and audio, without UI"
 
 [dependencies]

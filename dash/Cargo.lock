@@ -105,7 +105,7 @@ dependencies = [
 
 [[package]]
 name = "android-auto"
-version = "0.1.0"
+version = "0.0.6"
 dependencies = [
  "anyhow",
  "futures",
@@ -2880,7 +2880,7 @@ dependencies = [
 
 [[package]]
 name = "music"
-version = "0.1.0"
+version = "0.0.6"
 dependencies = [
  "lofty",
  "playback-rs",
@@ -3058,7 +3058,7 @@ checksum = "401b3a4027292c1c318fd2305783f791d5579d18e7143ef72d653bf0c29e6b36"
 
 [[package]]
 name = "nowa-dash"
-version = "0.1.0"
+version = "0.0.6"
 dependencies = [
  "android-auto",
  "music",
