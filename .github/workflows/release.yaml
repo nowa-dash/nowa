@@ -1,8 +1,7 @@
 name: Build and Release
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -11,9 +10,15 @@ jobs:
   build-dash:
     name: Build and release nowa-dash
     runs-on: ubuntu-24.04-arm
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
 
     steps:
       - uses: actions/checkout@main
+
+      - name: Get version
+        id: version
+        run: echo "tag=v$(grep -m1 '^version' dash/Cargo.toml | cut -d'"' -f2)" >> "$GITHUB_OUTPUT"
 
       - name: Install build dependencies
         run: |
@@ -37,6 +42,8 @@ jobs:
       - name: Upload binary to release
         uses: softprops/action-gh-release@master
         with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          generate_release_notes: true
           files: nowa-dash-aarch64
 
   build-pi-image:
@@ -44,7 +51,7 @@ jobs:
     needs: build-dash
     runs-on: ubuntu-24.04-arm
     env:
-      IMG_NAME: nowa-${{ github.event.release.tag_name }}-arm64.img
+      IMG_NAME: nowa-${{ needs.build-dash.outputs.tag }}-arm64.img
 
     steps:
       - uses: actions/checkout@main
@@ -66,4 +73,5 @@ jobs:
       - name: Upload image to release
         uses: softprops/action-gh-release@master
         with:
+          tag_name: ${{ needs.build-dash.outputs.tag }}
           files: ${{ env.IMG_NAME }}.xz
